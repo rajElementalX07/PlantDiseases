@@ -84,7 +84,7 @@ export const storePlantHistory = catchAsyncError(async (req, res, next) => {
     },
   });
 
-  const notificationMessage = `New disease in your area identified: ${data.description}`;
+  const notificationMessage = `${data.description}`;
 
   await Promise.all(
     nearbyFarmers.map(async (farmer) => {

@@ -78,7 +78,10 @@ function Analyzer() {
       );
       const serverPrediction = response?.data;
       setPrediction(serverPrediction);
-      setDescription(response?.data?.description);
+      // setDescription(response?.data?.description);
+      const { disease, description: desc, solution } = serverPrediction;
+      const formatted = `New disease in your area identified: Disease: ${disease}. ${desc}. Recommended treatment: ${solution}.`;
+      setDescription(formatted);
     } catch (err) {
       console.error("Failed to fetch prediction:", err);
       toast.error("Could not get prediction from model.");
@@ -296,7 +299,7 @@ function Analyzer() {
             </p>
             <p>
               <strong>Confidence:</strong>{" "}
-              {(prediction.confidence * 100).toFixed(0)}%
+              {(prediction.confidence)}%
             </p>
             <p>{prediction.description}</p>
             <p>
