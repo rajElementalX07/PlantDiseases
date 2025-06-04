@@ -15,6 +15,7 @@ import { getError } from "../utils/getError";
 import { uploadImage } from "../utils/uploadAWSfunc";
 import toast from "react-hot-toast";
 import MapScreen from "../components/MapScreen";
+import axios from "axios";
 
 function Analyzer() {
   const { token } = useSelector((state) => state.user);
@@ -31,6 +32,7 @@ function Analyzer() {
   const [prediction, setPrediction] = useState(null);
   //   const [pic,setPic] = useState(null);
 
+  const [fileObject, setFileObject] = useState(null);
   const placeholder = "/images/placeholder.jpg";
   //   useEffect(() => {
   //     const fetchProfile = async () => {
@@ -56,6 +58,31 @@ function Analyzer() {
   //     fetchProfile();
   //   }, [token]);
 
+  const fetchPrediction = async (file) => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/predict",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      const serverPrediction = response?.data?.prediction;
+      setPrediction(serverPrediction);
+      setDescription(response?.data?.description);
+    } catch (err) {
+      console.error("Failed to fetch prediction:", err);
+      toast.error("Could not get prediction from model.");
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     console.log("Name:", name);
@@ -78,6 +105,8 @@ function Analyzer() {
     const selectedImg = e?.target?.files[0];
     //    setPicToUpload(selectedImg)
     //    setPicPreview(URL.createObjectURL(selectedImg));
+    setFileObject(selectedImg);
+    fetchPrediction(selectedImg);
     handleImgUpload(selectedImg);
   };
 
@@ -119,7 +148,7 @@ function Analyzer() {
   };
 
   const handleSubmit = async (image, description) => {
-    // e.preventDefault();
+   // e.preventDefault();
 
     const url = "/api/farmer/plant";
     console.log(image, description);
@@ -139,8 +168,8 @@ function Analyzer() {
       );
       console.log(response);
 
-      const { data, prediction } = response.data;
-      setPrediction(prediction);
+      const { data } = response.data;
+    
       // setFormData(data);
       // setIsEditing(false);
     } catch (error) {
@@ -234,7 +263,7 @@ function Analyzer() {
           >
             <h6 className="mb-2">🩺 Crop Disease Prediction</h6>
             <p>
-              <strong>Disease:</strong> {prediction.disease}
+              <strong>Disease:</strong> {prediction.prediction}
             </p>
             <p>
               <strong>Confidence:</strong>{" "}
@@ -242,7 +271,7 @@ function Analyzer() {
             </p>
             <p>{prediction.description}</p>
             <p>
-              <strong>Recommended Treatment:</strong> {prediction.remedy}
+              <strong>Recommended Treatment:</strong> {prediction.solution}
             </p>
           </div>
         )}

@@ -71,15 +71,6 @@ export const storePlantHistory = catchAsyncError(async (req, res, next) => {
 
   const createdData = await PlantHistory.create(data);
 
-  const prediction = {
-    disease: "Powdery Mildew",
-    confidence: 0.92,
-    description:
-      "Powdery mildew is a fungal disease that appears as white powdery spots on both sides of leaves.",
-    remedy:
-      "Apply a sulfur‑based fungicide at first sign; improve air circulation around your plants.",
-  };
-
   const nearbyFarmers = await Farmer.find({
     userType: "farmer",
     farmLocation: {
@@ -102,7 +93,7 @@ export const storePlantHistory = catchAsyncError(async (req, res, next) => {
     })
   );
 
-  res.status(200).json({ success: true, data: createdData,prediction });
+  res.status(200).json({ success: true, data: createdData });
 });
 
 export const getPlantHistory = catchAsyncError(async (req, res, next) => {
