@@ -76,7 +76,7 @@ function Analyzer() {
           },
         }
       );
-      const serverPrediction = response?.data?.prediction;
+      const serverPrediction = response?.data;
       setPrediction(serverPrediction);
       setDescription(response?.data?.description);
     } catch (err) {
