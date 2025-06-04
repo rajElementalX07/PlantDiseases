@@ -89,14 +89,14 @@ export default function MapScreen(props) {
       }).then(({ results }) => { props.setAddr(results[0]?.formatted_address); })
     }
 
-    getAddress(location.lat, location.lng, "AIzaSyBSZZvJRvcyx0KWNbGIMhDbN1STwJWHZcs");
+    getAddress(location.lat, location.lng, "AIzaSyCTPCjDikmbQnuxUBHhM-435oEEfvuFKCQ");
 
     toast.success('location selected successfully.');
   };
 
   return (
     <div className="full-box" >
-      <LoadScript libraries={libs} googleMapsApiKey="AIzaSyBSZZvJRvcyx0KWNbGIMhDbN1STwJWHZcs">
+      <LoadScript libraries={libs} googleMapsApiKey="AIzaSyCTPCjDikmbQnuxUBHhM-435oEEfvuFKCQ">
         <GoogleMap
           id="sample-map"
           mapContainerStyle={{ height: '100%', width: '100%' }}

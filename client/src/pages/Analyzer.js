@@ -32,6 +32,7 @@ function Analyzer() {
   const [prediction, setPrediction] = useState(null);
   //   const [pic,setPic] = useState(null);
 
+  const [fruit, setFruit] = useState("apple");
   const [fileObject, setFileObject] = useState(null);
   const placeholder = "/images/placeholder.jpg";
   //   useEffect(() => {
@@ -63,7 +64,7 @@ function Analyzer() {
 
     const formData = new FormData();
     formData.append("file", file);
-
+    formData.append("fruit", fruit);
     try {
       const response = await axios.post(
         "http://localhost:5000/predict",
@@ -71,6 +72,7 @@ function Analyzer() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Accept: "application/json",
           },
         }
       );
@@ -228,6 +230,33 @@ function Analyzer() {
                 label="Upload crop picture"
                 onChange={handleImageChange}
               />
+
+              <Form.Group className="mt-2">
+                <Form.Label>Fruit Type</Form.Label>
+                <div style={{ position: "relative", width: "100%" }}>
+                  <Form.Control
+                    as="select"
+                    value={fruit}
+                    onChange={(e) => setFruit(e.target.value)}
+                    style={{ appearance: "none", paddingRight: "2rem" }}
+                  >
+                    <option value="apple">Apple</option>
+                    <option value="pomegranate">Pomegranate</option>
+                  </Form.Control>
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "1rem",
+                      transform: "translateY(-50%)",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    ▼
+                  </span>
+                </div>
+              </Form.Group>
+
               <ProgressBar
                 className="my-3 w-100"
                 now={uploadPercentage}
