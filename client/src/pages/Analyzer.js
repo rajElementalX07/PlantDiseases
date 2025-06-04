@@ -79,8 +79,8 @@ function Analyzer() {
       const serverPrediction = response?.data;
       setPrediction(serverPrediction);
       // setDescription(response?.data?.description);
-      const { disease, description: desc, solution } = serverPrediction;
-      const formatted = `New disease in your area identified: Disease: ${disease}. ${desc}. Recommended treatment: ${solution}.`;
+      const { prediction, description: desc, solution } = serverPrediction;
+      const formatted = `New disease in your area identified: Disease: ${prediction}. ${desc}. Recommended treatment: ${solution}.`;
       setDescription(formatted);
     } catch (err) {
       console.error("Failed to fetch prediction:", err);
